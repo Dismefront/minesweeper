@@ -1,0 +1,29 @@
+@font-face {
+    font-family: valorax;
+    src: url('./assets/Valorax.otf');
+}
+
+@mixin centerize-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+:root {
+    @include centerize-container();
+    $w: 800px;
+    $h: 600px;
+
+    --font-size: 16px;
+    --title-size: 24px;
+    --content-width: #{$w};
+    --content-height: #{$h};
+    --main-font: valorax, sans-serif;
+
+    @media (max-width: $w) or (max-height: $h) {
+        align-items: start;
+    }
+
+}

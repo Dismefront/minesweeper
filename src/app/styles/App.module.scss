@@ -1,0 +1,7 @@
+.container {
+    display: flex;
+    min-width: var(--content-width);
+    min-height: var(--content-height);
+    background-color: aqua;
+    justify-content: center;
+}
