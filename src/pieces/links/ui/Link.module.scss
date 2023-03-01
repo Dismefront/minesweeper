@@ -1,0 +1,25 @@
+.Link {
+    text-decoration: none;
+    font-family: var(--main-font);
+    font-size: var(--title-size);
+}
+
+.menu {
+    &:link {
+        color: tomato;
+    }
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+.back {
+    background-color: darkslategrey;
+    border-style: solid;
+    color: tomato;
+    padding: 5px;
+}
+
+
+

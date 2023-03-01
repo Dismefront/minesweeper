@@ -4,4 +4,8 @@
     min-height: var(--content-height);
     background-color: aqua;
     justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: relative;
+    border-radius: 10px;
 }
