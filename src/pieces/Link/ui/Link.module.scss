@@ -12,6 +12,10 @@
     &:hover {
         text-decoration: underline;
     }
+
+    &:visited {
+        color: tomato;
+    }
 }
 
 .back {
@@ -19,6 +23,10 @@
     border-style: solid;
     color: tomato;
     padding: 5px;
+
+    &:hover {
+        background-color: #243d3d;
+    }
 }
 
 

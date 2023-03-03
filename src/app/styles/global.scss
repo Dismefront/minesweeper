@@ -21,6 +21,8 @@
     --content-width: #{$w};
     --content-height: #{$h};
     --main-font: valorax, sans-serif;
+    --game-width: 450px;
+    --panel-height: 50px;
 
     @media (max-width: $w) or (max-height: $h) {
         align-items: start;

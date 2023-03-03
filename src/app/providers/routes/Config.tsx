@@ -15,7 +15,11 @@ export const routeConfig: RouteObject[] = [
     },
     {
         path: ApplicationPaths.START,
-        element: <Game />
+        element: <Game newgame={true} />
+    },
+    {
+        path: ApplicationPaths.CONTINUE,
+        element: <Game newgame={false} />
     },
     {
         path: ApplicationPaths.ANY,

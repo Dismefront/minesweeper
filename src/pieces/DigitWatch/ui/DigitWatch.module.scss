@@ -1,0 +1,11 @@
+.DigitWatch {
+    height: var(--panel-height);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+}
+
+.pixelated {
+    image-rendering: pixelated;
+}

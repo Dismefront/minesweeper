@@ -1,0 +1,18 @@
+.AppTable {
+    width: 100%;
+    background-color: #C0C0C0;
+    border: 2px solid;
+    border-right-color: #858585;
+    border-bottom-color: #858585;
+    border-left-color: #FFF;
+    border-top-color: #FFF;
+}
+
+.withBorder {
+    border-collapse: collapse;
+    padding: 5px;
+    border-width: 5px;
+    border-color: #C0C0C0;
+    box-shadow: inset -3px -3px #FFF, inset 3px 3px #858585;
+    border-style: solid;
+}

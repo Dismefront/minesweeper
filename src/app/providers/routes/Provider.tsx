@@ -5,7 +5,7 @@ export const routerProvider = (cfg: RouteObject[]) => {
         <Routes>
             {
                 cfg.map(({ path, element }) => {
-                    return <Route path={ path } element={ element } />
+                    return <Route path={ path } element={ element } key={ path } />
                 })
             }
         </Routes>

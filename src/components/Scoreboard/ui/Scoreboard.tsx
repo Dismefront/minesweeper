@@ -1,5 +1,5 @@
-import { AppLink } from "@/pieces/links";
-import { LinkDecoration } from "@/pieces/links/ui/Link";
+import { AppLink } from "@/pieces/Link";
+import { LinkDecoration } from "@/pieces/Link";
 import { FunctionComponent } from "react";
 import scss from './Scoreboard.module.scss';
 
