@@ -4,17 +4,18 @@ import { useSelector } from "react-redux";
 import scss from './Tile.module.scss';
 
 export interface TileProps {
-    defaultSprite: string,
+    defaultSprite: string | undefined,
     pressedSprite?: string,
     height?: string,
-    width?: string
+    width?: string,
+    onClick?: () => void
 }
 
 export const Tile: FunctionComponent<TileProps> = memo(({
-    defaultSprite, pressedSprite, height, width
+    defaultSprite, pressedSprite, height, width, onClick
 }) => {
 
-    const [display, changeDisplay] = useState<string>(defaultSprite);
+    const [display, changeDisplay] = useState<string | undefined>(defaultSprite);
     const isMouseDown = useSelector((state: storeType) => state.mouseReducer.pressed);
 
     const handleWhenEnter = () => {
@@ -46,6 +47,7 @@ export const Tile: FunctionComponent<TileProps> = memo(({
             style={{
                 height, width
             }}
+            onClick={onClick}
         >
             <img src={ display }/>
         </button>
