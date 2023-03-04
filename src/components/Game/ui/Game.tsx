@@ -20,7 +20,7 @@ export const Game: FunctionComponent<GameProps> = ({ newgame }) => {
             <div className={scss.Game}>
                 <AppTable payload={[
                     <UpperScreen />,
-                    <TileScreen />
+                    <TileScreen boardSize={16} />
                 ]}/>
             </div>
         </>

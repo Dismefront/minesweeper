@@ -1,0 +1,13 @@
+
+.Tile {
+    border: none;
+    background-color: transparent;
+
+    & img {
+        display: flex;
+        image-rendering: pixelated;
+        min-width: 100%;
+        min-height: 100%;
+        -webkit-user-drag: none;
+    }
+}

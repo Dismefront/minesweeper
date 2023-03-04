@@ -11,6 +11,7 @@ import Num7 from '../assets/sprites/timer_seven.png';
 import Num8 from '../assets/sprites/timer_eight.png';
 import Num9 from '../assets/sprites/timer_nine.png';
 import { generateRandomString } from "@/pieces/tools/stringGenerator";
+import { getNumberProp } from "@/pieces/tools/getCssProp";
 
 function getSprite(number: number): string | undefined {
     switch (number) {
@@ -46,9 +47,7 @@ export interface DigitWatchProps {
 
 export const DigitWatch: FunctionComponent<DigitWatchProps> = ({ displayNum, boardCount }) => {
 
-    const rootStyle = getComputedStyle(document.documentElement);
-    const widthProp: string = rootStyle.getPropertyValue('--panel-height');
-    const height: number = Number.parseInt(widthProp.slice(0, widthProp.indexOf('px')));
+    const height: number = getNumberProp('--panel-height', 'px');
 
     const display: number[] = Array(boardCount);
     for (let i = boardCount - 1; i >= 0; i--) {
@@ -58,8 +57,8 @@ export const DigitWatch: FunctionComponent<DigitWatchProps> = ({ displayNum, boa
 
     const boardNumberComponent = Array(boardCount);
     for (let i = 0; i < boardCount; i++) {
+
         boardNumberComponent[i] = useMemo(() => {
-            console.log("rendered " + display[i]);
             return <img
                 key={generateRandomString(5) + display[i]}
                 className={scss.pixelated} 
@@ -67,6 +66,7 @@ export const DigitWatch: FunctionComponent<DigitWatchProps> = ({ displayNum, boa
                 src={getSprite(display[i])} 
             />
         }, [display[i]]);
+        
     }
 
     return (
