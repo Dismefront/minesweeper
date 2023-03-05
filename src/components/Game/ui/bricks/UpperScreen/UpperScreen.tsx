@@ -1,5 +1,5 @@
 import { DigitWatch } from "@/pieces/DigitWatch";
-import { FunctionComponent, useState } from "react";
+import { FunctionComponent, useEffect, useMemo, useState } from "react";
 import scss from './UpperScreen.module.scss';
 import { Tile } from "@/pieces/Tile/ui/Tile";
 import HappySmile from '@/components/Game/assets/sprites/smile_init.png';
@@ -10,7 +10,8 @@ import CoolSmile from '@/components/Game/assets/sprites/smile_sunglasses.png';
 import { useSelector } from "react-redux";
 import { storeType } from "@/app/providers/store";
 import { useDispatch } from "react-redux";
-import { gameSliceState, initializeBoard, refresh } from "@/app/providers/store/slices/gameSlice";
+import { increaseTimer, refresh } from "@/app/providers/store/slices/gameSlice";
+import { clearInterval } from "timers";
 
 export const UpperScreen: FunctionComponent = () => {
 
@@ -28,11 +29,24 @@ export const UpperScreen: FunctionComponent = () => {
     else if (st.game_won)
         ToBeRendered = CoolSmile;
 
-    return (
-        <div
+    useEffect(() => {
+        let timerID: NodeJS.Timer
+        if (st.timer_on) {
+            timerID = setInterval(() => {
+                dispatch(increaseTimer())
+            }, 1000);
+        }
+        return () => {
+            if (timerID)
+                window.clearInterval(timerID);
+        };
+    }, [st.timer_on]);
+
+    const component = useMemo(() => {
+        return <div
             className={scss.UpperScreen}
         >
-            <DigitWatch boardCount={2} displayNum={40} />
+            <DigitWatch boardCount={2} displayNum={st.flags_count} />
             <Tile
                 defaultSprite={ToBeRendered}
                 pressedSprite={PressedSmile}
@@ -43,8 +57,12 @@ export const UpperScreen: FunctionComponent = () => {
                 }
                 isTile={false}
             />
-            <DigitWatch boardCount={3} displayNum={10} />
+            <DigitWatch boardCount={3} displayNum={st.seconds} />
         </div>
+    }, [ToBeRendered, st.flags_count, st.seconds]);
+
+    return (
+        component
     );
 
 }

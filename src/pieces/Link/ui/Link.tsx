@@ -5,7 +5,8 @@ import scss from './Link.module.scss';
 
 export enum LinkDecoration {
     MENU='menu', 
-    BACK='back'
+    BACK='back',
+    TITLE='title'
 }
 
 export interface AppLinkProps extends LinkProps {
@@ -14,9 +15,9 @@ export interface AppLinkProps extends LinkProps {
 }
 
 export const AppLink: FunctionComponent<AppLinkProps> 
-        = ({ children, to, linkDecoration=LinkDecoration.MENU, applyClass='' }) => {
+        = ({ target, children, to, linkDecoration=LinkDecoration.MENU, applyClass='' }) => {
     return (
-        <Link to={to} className={concat(scss.Link, scss[linkDecoration], applyClass)}>
+        <Link target={target} to={to} className={concat(scss.Link, scss[linkDecoration], applyClass)}>
             { children }
         </Link>
     )

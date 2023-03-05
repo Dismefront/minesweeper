@@ -8,7 +8,9 @@ export interface gameSliceState {
     game_won: boolean,
     game_lost: boolean,
     bomb_count: number,
-    flags_count: number
+    flags_count: number,
+    timer_on: boolean,
+    seconds: number
 }
 
 export interface InitActionPayload {
@@ -23,8 +25,10 @@ const init_state: gameSliceState = {
     board_size: 16,
     game_won: false,
     game_lost: false,
-    bomb_count: 3,
-    flags_count: 40
+    bomb_count: 40,
+    flags_count: 40,
+    timer_on: false,
+    seconds: 0
 }
 
 const gameSlice = createSlice({
@@ -37,7 +41,14 @@ const gameSlice = createSlice({
             state.player_discovery = [];
             state.game_won = false;
             state.game_lost = false;
-            state.bomb_count = 3;
+            state.bomb_count = 40;
+            state.flags_count = 40;
+            state.timer_on = false;
+            state.seconds = 0;
+        },
+
+        increaseTimer(state) {
+            state.seconds++;
         },
 
         handleRightClick(state, action: PayloadAction<InitActionPayload>) {
@@ -46,10 +57,16 @@ const gameSlice = createSlice({
                 return;
             if (state.player_discovery[x][y] == 1)
                 return;
-            if (state.player_discovery[x][y] == 0)
-                state.player_discovery[x][y] = 2;
-            else if (state.player_discovery[x][y] == 2)
+            if (state.player_discovery[x][y] == 0) {
+                if (state.flags_count > 0) {
+                    state.player_discovery[x][y] = 2;
+                    state.flags_count--;
+                }
+            }
+            else if (state.player_discovery[x][y] == 2) {
                 state.player_discovery[x][y] = 3;
+                state.flags_count++;
+            }
             else if (state.player_discovery[x][y] == 3)
                 state.player_discovery[x][y] = 0;
         },
@@ -60,6 +77,7 @@ const gameSlice = createSlice({
             // is the guess is bad, we end the game
             if (state.board[x][y] == -1) {
                 state.game_lost = true;
+                state.timer_on = false;
                 state.player_discovery[x][y] = -2;
                 for (let i = 0; i < state.board_size; i++) {
                     for (let j = 0; j < state.board_size; j++) {
@@ -107,13 +125,14 @@ const gameSlice = createSlice({
                 }
             }
             if (cnt == state.board_size * state.board_size - state.bomb_count) {
-                console.log("SDF")
                 state.game_won = true;
+                state.timer_on = false;
             }
         },
 
         initializeBoard(state, action: PayloadAction<InitActionPayload>) {
             state.gameStarted = true;
+            state.timer_on = true;
             const { x, y } = action.payload;
             /**
              * board:
@@ -231,8 +250,10 @@ const gameSlice = createSlice({
                 }
             }
             dfs(x, y);
-            if (cnt == state.board_size * state.board_size - state.bomb_count)
+            if (cnt == state.board_size * state.board_size - state.bomb_count) {
                 state.game_won = true;
+                state.timer_on = false;
+            }
         },
 
         
@@ -240,4 +261,4 @@ const gameSlice = createSlice({
 });
 
 export const gameReducer = gameSlice.reducer;
-export const { initializeBoard, refresh, tryOpen, handleRightClick } = gameSlice.actions;
+export const { initializeBoard, refresh, tryOpen, handleRightClick, increaseTimer } = gameSlice.actions;

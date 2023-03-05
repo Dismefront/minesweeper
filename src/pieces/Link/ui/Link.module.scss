@@ -5,17 +5,17 @@
 }
 
 .menu {
-    &:link {
-        color: tomato;
+
+    text-shadow: 1px 1px 1px #000;
+
+    &:link, &:visited {
+        color: rgb(182, 0, 0);
     }
 
     &:hover {
         text-decoration: underline;
     }
 
-    &:visited {
-        color: tomato;
-    }
 }
 
 .back {
@@ -26,6 +26,19 @@
 
     &:hover {
         background-color: #243d3d;
+    }
+}
+
+.title {
+    font-size: 16px;
+    text-shadow: 1px 1px 1px red;
+    
+    &:visited, &:link {
+        color: black;
+    }
+
+    &:hover {
+        text-decoration: underline;
     }
 }
 
