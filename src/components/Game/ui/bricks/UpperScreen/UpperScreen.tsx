@@ -37,7 +37,7 @@ export const UpperScreen: FunctionComponent = () => {
                 defaultSprite={ToBeRendered}
                 pressedSprite={PressedSmile}
                 height={"80%"}
-                onClick={() => {
+                whenClick={() => {
                     dispatch(refresh());
                 }
                 }

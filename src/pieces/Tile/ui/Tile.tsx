@@ -8,12 +8,15 @@ export interface TileProps {
     pressedSprite?: string,
     height?: string,
     width?: string,
-    onClick?: () => void,
-    isTile: boolean
+    whenClick?: () => void,
+    whenRightClick?: () => void,
+    isTile: boolean,
+    gameFinished?: boolean,
 }
 
 export const Tile: FunctionComponent<TileProps> = ({
-    defaultSprite, pressedSprite, height, width, onClick, isTile
+    defaultSprite, pressedSprite, height, width, 
+    whenClick, isTile, gameFinished, whenRightClick
 }) => {
 
     const [isMouseOver, setIsMouseOver] = useState(false);
@@ -22,10 +25,12 @@ export const Tile: FunctionComponent<TileProps> = ({
     const dispatch = useDispatch();
 
     useEffect(() => {
-        changeDisplay(`${defaultSprite}?${new Date().getTime()}`);
+        changeDisplay(`${defaultSprite}`);
     }, [defaultSprite]);
 
     const handleMouseEnter = () => {
+        if (isTile && gameFinished)
+            return;
         if (isMouseOver)
             return;
         if (isMousePressed)
@@ -35,6 +40,8 @@ export const Tile: FunctionComponent<TileProps> = ({
     const handleMouseLeave = () => {
         if (!isMouseOver && !isMousePressed)
             return;
+        if (isTile && gameFinished)
+            return;
         if (isTile)
             dispatch(mouseUp());
         setIsMouseOver(false);
@@ -42,7 +49,11 @@ export const Tile: FunctionComponent<TileProps> = ({
         changeDisplay(defaultSprite);
     };
 
-    const handleMouseDown = () => {
+    const handleMouseDown = (e: React.MouseEvent<HTMLButtonElement>) => {
+        if (e.button == 2)
+            return;
+        if (isTile && gameFinished)
+            return;
         if (isTile) {
             dispatch(mouseDown());
         }
@@ -59,7 +70,23 @@ export const Tile: FunctionComponent<TileProps> = ({
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             onMouseDown={handleMouseDown}
-            onClick={onClick}
+            onClick={() => {
+                    if (isTile && gameFinished) {
+                        return;
+                    }
+                    if (whenClick)
+                        whenClick();
+                    handleMouseLeave();
+                }
+            }
+            onContextMenu={() => {
+                if (isTile && gameFinished) {
+                    return;
+                }
+                if (whenRightClick)
+                    whenRightClick();
+                handleMouseLeave();
+            }}
         >
             { display ? <img src={ display }/> : undefined }
         </button>
