@@ -10,14 +10,6 @@ import { useDispatch } from "react-redux";
 import { mouseDown, mouseUp } from "./providers/store/slices/mouseSlice";
 
 export const App: FunctionComponent = () => {
-    const dispatch = useDispatch();
-    document.addEventListener('mousedown', () => {
-        dispatch(mouseDown());
-    });
-    document.addEventListener('mouseup', () => {
-        dispatch(mouseUp());
-    });
-
     return (
         <div className={scss.container}>
             { routerProvider(routeConfig) }

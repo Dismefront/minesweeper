@@ -7,7 +7,7 @@ export interface gameSliceState {
     board_size: number,
     game_won: boolean,
     game_lost: boolean,
-    bomb_count: number
+    bomb_count: number,
 }
 
 export interface InitActionPayload {
@@ -22,7 +22,7 @@ const init_state: gameSliceState = {
     board_size: 16,
     game_won: false,
     game_lost: false,
-    bomb_count: 40
+    bomb_count: 40,
 }
 
 const gameSlice = createSlice({
@@ -38,9 +38,8 @@ const gameSlice = createSlice({
             state.bomb_count = 40;
         },
 
-
-
         initializeBoard(state, action: PayloadAction<InitActionPayload>) {
+            state.gameStarted = true;
             const { x, y } = action.payload;
             /**
              * board:

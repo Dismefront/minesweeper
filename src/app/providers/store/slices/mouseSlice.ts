@@ -7,10 +7,12 @@ const mouseSlice = createSlice({
     },
     reducers: {
         mouseUp(state) {
+            console.log("WHO")
             state.pressed = false;
         },
 
         mouseDown(state) {
+            console.log("ME")
             state.pressed = true;
         }
     }

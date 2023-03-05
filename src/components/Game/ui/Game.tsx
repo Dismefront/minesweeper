@@ -15,8 +15,7 @@ export interface GameProps {
 }
 
 export const Game: FunctionComponent<GameProps> = ({ newgame }) => {
-    const st = useSelector((state: storeType) => state.gameReducer);
-    if (st.gameStarted && newgame) {
+    if (newgame) {
         const dispatch = useDispatch();
         dispatch(refresh());
     }
