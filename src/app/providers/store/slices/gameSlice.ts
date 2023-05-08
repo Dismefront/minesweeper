@@ -74,6 +74,9 @@ const gameSlice = createSlice({
         tryOpen(state, action: PayloadAction<InitActionPayload>) {
             const { x, y } = action.payload;
 
+            if (state.player_discovery[x][y] === 2)
+                return;
+
             // is the guess is bad, we end the game
             if (state.board[x][y] == -1) {
                 state.game_lost = true;
@@ -81,9 +84,9 @@ const gameSlice = createSlice({
                 state.player_discovery[x][y] = -2;
                 for (let i = 0; i < state.board_size; i++) {
                     for (let j = 0; j < state.board_size; j++) {
-                        if (state.player_discovery[i][j] == 2 && state.board[i][j] != -1)
+                        if (state.player_discovery[i][j] === 2 && state.board[i][j] !== -1)
                             state.player_discovery[i][j] = -3;
-                        if (state.board[i][j] == -1 && i != x && j != y)
+                        else if (state.board[i][j] === -1 && (i !== x || j !== y))
                             state.player_discovery[i][j] = -1;
                     }
                 }
@@ -100,11 +103,11 @@ const gameSlice = createSlice({
             const dfs = (curx: number, cury: number) => {
                 was[curx][cury] = true;
                 state.player_discovery[curx][cury] = 1
-                let directionsX = [0, 0, 1, -1];
-                let directionsY = [1, -1, 0, 0];
+                let directionsX = [0, 0, -1, 1, 1, -1, 1, -1];
+                let directionsY = [1, -1, 0, 0, 1, 1, -1, -1];
                 if (state.board[curx][cury] > 0)
                     return;
-                for (let k = 0; k < 4; k++) {
+                for (let k = 0; k < 8; k++) {
                     let newx = curx + directionsX[k];
                     let newy = cury + directionsY[k];
                     if (newx < 0 || newx >= state.board_size || newy < 0 || newy >= state.board_size)
@@ -171,12 +174,12 @@ const gameSlice = createSlice({
 
             // defining the empty zone
             let dfs_stack = [[x, y]]
-            let directionsX = [0, 0, 1, -1];
-            let directionsY = [1, -1, 0, 0];
+            let directionsX = [0, 0, -1, 1, 1, -1, 1, -1];
+            let directionsY = [1, -1, 0, 0, 1, 1, -1, -1];
             while (dfs_stack.length > 0) {
                 let cur = dfs_stack.pop() as number[];
                 state.player_discovery[cur[0]][cur[1]] = 1;
-                for (let i = 0; i < 4; i++) {
+                for (let i = 0; i < 8; i++) {
                     let newX = cur[0] + directionsX[i];
                     let newY = cur[1] + directionsY[i];
                     if (newX >= 0 && newX < state.board_size
@@ -198,11 +201,23 @@ const gameSlice = createSlice({
             let currentBombCnt = 0;
             while (currentBombCnt != state.bomb_count) {
                 const rnd = getRandomXY();
-                if (state.player_discovery[rnd[0]][rnd[1]])
+                if (state.player_discovery[rnd[0]][rnd[1]] != 0
+                        || state.board[rnd[0]][rnd[1]] == -1)
                     continue;
                 state.board[rnd[0]][rnd[1]] = -1;
                 currentBombCnt++;
             }
+
+            let tmp = 0;
+            for (let i = 0; i < state.board_size; i++) {
+                for (let j = 0; j < state.board_size; j++) {
+                    if (state.board[i][j] == -1) {
+                        console.log(i, j);
+                        tmp++;
+                    }
+                }
+            }
+            console.log(tmp);
 
             // counting area around bombs
             directionsX = [0, 0, -1, 1, 1, -1, 1, -1];
@@ -235,11 +250,11 @@ const gameSlice = createSlice({
                 was[curx][cury] = true;
                 cnt++;
                 state.player_discovery[curx][cury] = 1
-                let directionsX = [0, 0, 1, -1];
-                let directionsY = [1, -1, 0, 0];
+                let directionsX = [0, 0, -1, 1, 1, -1, 1, -1];
+                let directionsY = [1, -1, 0, 0, 1, 1, -1, -1];
                 if (state.board[curx][cury] > 0)
                     return;
-                for (let k = 0; k < 4; k++) {
+                for (let k = 0; k < 8; k++) {
                     let newx = curx + directionsX[k];
                     let newy = cury + directionsY[k];
                     if (newx < 0 || newx >= state.board_size || newy < 0 || newy >= state.board_size)
